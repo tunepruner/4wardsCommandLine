@@ -56,18 +56,16 @@ public class Sessions {
 
     public static void persist() {
         try {
-            Sessions data = new Sessions();
+            Sessions sessions = new Sessions();
             JAXBContext context = JAXBContext.newInstance(Sessions.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             StringWriter sw = new StringWriter();
-            marshaller.marshal(data, sw);
+            marshaller.marshal(sessions, sw);
 
-            File f = new File("./data.xml");
-            marshaller.marshal(data, f);
-
-            System.out.println(sw.toString());
+            File f = new File("./sessions.xml");
+            marshaller.marshal(sessions, f);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -78,8 +76,13 @@ public class Sessions {
         JAXBContext jaxbContext = JAXBContext.newInstance(Sessions.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-        File f = new File("data.xml");
+        File f = new File("./sessions.xml");
 
-        Sessions data = (Sessions) unmarshaller.unmarshal(f);
+        Sessions unmarshalledObject = (Sessions) unmarshaller.unmarshal(f);
+        sessions = unmarshalledObject.getSessions();
+    }
+
+    private List<Session> getSessions() {
+        return sessions;
     }
 }

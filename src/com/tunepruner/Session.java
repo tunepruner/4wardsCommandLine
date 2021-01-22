@@ -9,9 +9,9 @@ public class Session {
     @XmlAttribute
     private int sessionID;
     @XmlAttribute
-    private LocalTime clockIn;
+    private String clockIn;
     @XmlAttribute
-    private LocalTime clockOut;
+    private String clockOut;
     @XmlAttribute
     private int focusLevel = 0;
     @XmlAttribute
@@ -27,11 +27,11 @@ public class Session {
         return sessionID;
     }
 
-    public LocalTime getClockIn() {
+    public String getClockIn() {
         return clockIn;
     }
 
-    public LocalTime getClockOut() {
+    public String getClockOut() {
         return clockOut;
     }
 
@@ -46,7 +46,7 @@ public class Session {
 
     public Session(LocalTime clockIn){
         sessionID = lastIdUsed++;
-        this.clockIn = clockIn;
+        this.clockIn = clockIn.toString();
     }
 
     public void setFocusLevel(int focusLevel) {
@@ -59,11 +59,11 @@ public class Session {
 
 
     public void setClockIn(LocalTime clockIn) {
-        this.clockIn = clockIn;
+        this.clockIn = clockIn.toString();
     }
 
     public void setClockOut(LocalTime clockOut) {
-        this.clockOut = clockOut;
+        this.clockOut = clockOut.toString();
     }
 
     public void setSessionID(int sessionID) {

@@ -12,17 +12,18 @@ public class Main {
 
 
     public static void main(String[] args) throws JAXBException {
+
         Sessions.readFromFile();
         prompt();
     }
 
     private static void prompt() {
+        Sessions.persist();
         Scanner initialScanner = new Scanner(System.in);
 
         System.out.print("Type a command (\"in\", \"out\", or \"adjust\"):");
         String initialCommand = initialScanner.nextLine();
         parseClockInCommand(initialCommand);
-//        Sessions.persist();
     }
 
     private static void parseClockInCommand(String command) {
