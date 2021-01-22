@@ -1,16 +1,18 @@
 package com.tunepruner;
 
+import javax.xml.bind.JAXBException;
 import java.time.LocalTime;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
 public class Main {
-    private static Session currentSession;//TODO remember to set this to null when clocking out!
+    private static Session currentSession;
     //TODO handle a "cancel" command.
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException {
+        Sessions.readFromFile();
         prompt();
     }
 
@@ -20,6 +22,7 @@ public class Main {
         System.out.print("Type a command (\"in\", \"out\", or \"adjust\"):");
         String initialCommand = initialScanner.nextLine();
         parseClockInCommand(initialCommand);
+//        Sessions.persist();
     }
 
     private static void parseClockInCommand(String command) {
@@ -39,7 +42,7 @@ public class Main {
         boolean alreadyClockedIn = currentSession != null;
 
         if (command.equals("out") && alreadyClockedIn) {
-            currentSession.clockOut();
+            currentSession.setClockOut(LocalTime.now());
             promptAtClockOut();
         } else if (command.equals("out") && !alreadyClockedIn) {
             System.out.println("You're not clocked in yet!");
@@ -73,13 +76,116 @@ public class Main {
             prompt();
         } else if (command.equals("adjust") && !alreadyClockedIn)
             promptAtAdjust();
-        prompt();
     }
 
     private static void promptAtAdjust() {
+        Scanner scanner = new Scanner(System.in);
+
+        Session sessionToAdjust = null;
+
+        while (sessionToAdjust == null) {
+            try {
+                System.out.print("What session? (enter session ID#): ");
+                sessionToAdjust = Sessions.get(parseInt(scanner.nextLine()));
+                promptAdjustParameter(sessionToAdjust);
+            } catch (IllegalArgumentException e) {
+                System.out.println("\"There is no session with that ID!");
+            }
+        }
 
     }
 
+    private static void promptAdjustParameter(Session sessionToAdjust) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Which parameter (\"in\", \"out\", \"focus\", or \"relevance\"): ");
+
+        String parameterToAdjust = scanner.nextLine();
+
+        if (parameterToAdjust.equals("in")) {
+            promptAdjustClockIn(sessionToAdjust);
+        } else if (parameterToAdjust.equals("out")) {
+            promptAdjustClockOut(sessionToAdjust);
+        } else if (parameterToAdjust.equals("focus")) {
+            promptAdjustFocus(sessionToAdjust);
+        } else if (parameterToAdjust.equals("relevance")) {
+            promptAdjustRelevance(sessionToAdjust);
+        } else
+            System.out.println("That's not a valid parameter name. (\"in\", \"out\", \"focus\", or \"relevance\"): ");
+
+
+    }
+
+    private static void promptAdjustClockIn(Session sessionToAdjust) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What new value(example: 08:20:45)?: ");
+
+        LocalTime newClockIn = null;
+
+        while (newClockIn == null) {
+            try {
+                String newClockInBeforeParse = scanner.nextLine() + ".000000000";
+                newClockIn = LocalTime.parse(newClockInBeforeParse);
+                sessionToAdjust.setClockIn(newClockIn);
+                prompt();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid! (example: 08:20:45)");
+            }
+        }
+    }
+
+
+    private static void promptAdjustClockOut(Session sessionToAdjust) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What new value(example: 08:20:45)?: ");
+
+        LocalTime newClockOut = null;
+
+        while (newClockOut == null) {
+            try {
+                String newClockOutBeforeParse = scanner.nextLine() + ".000000000";
+                newClockOut = LocalTime.parse(newClockOutBeforeParse);
+                sessionToAdjust.setClockOut(newClockOut);
+                prompt();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid! (example: 08:20:45)");
+            }
+        }
+    }
+
+    private static void promptAdjustFocus(Session sessionToAdjust) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What new value(1-10)?: ");
+
+        int newFocusLevel = 0;
+
+        while (newFocusLevel == 0) {
+            try {
+                newFocusLevel = validateLevel(Integer.parseInt(scanner.nextLine()));
+                sessionToAdjust.setFocusLevel(newFocusLevel);
+                prompt();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid! (example: 08:20:45)");
+            }
+        }
+
+    }
+
+    private static void promptAdjustRelevance(Session sessionToAdjust) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What new value(1-10)?: ");
+
+        int newRelevanceLevel = 0;
+
+        while (newRelevanceLevel == 0) {
+            try {
+                newRelevanceLevel = validateLevel(Integer.parseInt(scanner.nextLine()));
+                sessionToAdjust.setRelevanceLevel(newRelevanceLevel);
+                prompt();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid! (example: 08:20:45)");
+            }
+        }
+    }
 
     private static void promptAtClockOut() {
         Scanner scanner = new Scanner(System.in);
@@ -87,16 +193,18 @@ public class Main {
         while (currentSession.getFocusLevel() == 0) {
             try {
                 System.out.print("Set focus level (1-10):");
-                currentSession.setFocusLevel(parseInt(scanner.nextLine()));
+                int focusLevel = validateLevel(parseInt(scanner.nextLine()));
+                currentSession.setFocusLevel(focusLevel);
             } catch (IllegalArgumentException e) {
                 System.out.println("That's not valid. Type a number from 1 to 10.");
             }
         }
 
-        while (currentSession.getRelevanceLevel() == 0) {
+        while (currentSession != null && currentSession.getRelevanceLevel() == 0) {
             try {
-                System.out.print("Set focus level (1-10):");
-                currentSession.setRelevanceLevel(parseInt(scanner.nextLine()));
+                System.out.print("Set relevance level (1-10):");
+                int relevanceLevel = validateLevel(parseInt(scanner.nextLine()));
+                currentSession.setRelevanceLevel(relevanceLevel);
                 Sessions.add(currentSession);
                 currentSession = null;
                 prompt();
@@ -106,5 +214,12 @@ public class Main {
         }
 
     }
+
+    public static int validateLevel(int levelToCheck){
+        if (levelToCheck > 0 && levelToCheck > 10) throw new IllegalArgumentException();
+        else return levelToCheck;
+    }
+
+
 }
 

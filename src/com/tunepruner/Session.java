@@ -1,14 +1,26 @@
 package com.tunepruner;
 
+import javax.xml.bind.annotation.*;
 import java.time.LocalTime;
 
-public class Session {  private int sessionID;
-
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Session {
+    @XmlAttribute
+    private int sessionID;
+    @XmlAttribute
     private LocalTime clockIn;
+    @XmlAttribute
     private LocalTime clockOut;
+    @XmlAttribute
     private int focusLevel = 0;
+    @XmlAttribute
     private int relevanceLevel = 0;
-    static int lastIdUsed = 0;
+    static int lastIdUsed = 1;
+
+    public Session(){
+
+    }
 
 
     public int getSessionID() {
@@ -33,7 +45,7 @@ public class Session {  private int sessionID;
 
 
     public Session(LocalTime clockIn){
-        lastIdUsed++;
+        sessionID = lastIdUsed++;
         this.clockIn = clockIn;
     }
 
@@ -46,11 +58,6 @@ public class Session {  private int sessionID;
     }
 
 
-    public void clockOut(){
-        //Set endTime
-        //add to list
-    }
-
     public void setClockIn(LocalTime clockIn) {
         this.clockIn = clockIn;
     }
@@ -58,6 +65,11 @@ public class Session {  private int sessionID;
     public void setClockOut(LocalTime clockOut) {
         this.clockOut = clockOut;
     }
+
+    public void setSessionID(int sessionID) {
+        this.sessionID = sessionID;
+    }
+
 
 
 
