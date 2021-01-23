@@ -1,5 +1,9 @@
 package com.tunepruner;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.sun.javafx.tools.packager.JarSignature;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import javax.xml.bind.JAXBContext;
@@ -10,16 +14,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement(name = "sessions")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Sessions {
-    @XmlElement(name = "session", type = Session.class)
     private static List<Session> sessions = new ArrayList<>();
 
     public static void add(Session currentSession) {
@@ -55,45 +55,45 @@ public class Sessions {
 
     }
 
-    public static void persist() {
-        try {
-            Sessions sessions = new Sessions();
-            JAXBContext context = JAXBContext.newInstance(Sessions.class);
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+    public static void persist() throws IOException {
+        String fileName = "sessions.json";
 
-            StringWriter sw = new StringWriter();
-            marshaller.marshal(sessions, sw);
+        Gson gson = new Gson();
 
+        Session[] sessionsArray = new Session[sessions.size()];
+        for (int i = 0; i < sessions.size(); i++){
+            sessionsArray[i] = sessions.get(i);
+        }
 
-            File f = new File("./programfiles/sessions.xml");
-            marshaller.marshal(sessions, f);
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
+            gson.toJson(sessionsArray, fileWriter);
         }
 
     }
 
     public static void readFromFile() throws JAXBException, IOException {
-        File theDir = new File("./programfiles");
-        if (!theDir.exists()){
-            theDir.mkdirs();
+        String fileName = "sessions.json";
+
+        File file = new File(fileName);
+
+        if (!file.exists()) {
+            file.createNewFile();
+        } else if (file.length() != 0) {
+            Gson gson = new Gson();
+
+            try (FileReader fileReader = new FileReader(fileName);
+                 JsonReader jsonReader = new JsonReader(fileReader);
+            ) {
+
+                Session[] sessionArray = gson.fromJson(jsonReader, Session[].class);
+
+                for (int i = 0; i < sessionArray.length; i++) {
+                    sessions.add(i, sessionArray[i]);
+                }
+            }
         }
 
-        File f = new File("./programfiles/sessions.xml");
-        if (!f.exists()) {
-            f.createNewFile();
-        }
-        else if (f.length() != 0){
-            JAXBContext jaxbContext = JAXBContext.newInstance(Sessions.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-
-            Sessions unmarshalledObject = (Sessions) unmarshaller.unmarshal(f);
-            sessions = unmarshalledObject.getSessions();
-
-            Session.lastIdUsed = sessions.size() + 1;
-        }
+        Session.lastIdUsed = sessions.size() + 1;
     }
 
     private List<Session> getSessions() {

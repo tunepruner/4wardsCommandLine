@@ -3,25 +3,13 @@ package com.tunepruner;
 import javax.xml.bind.annotation.*;
 import java.time.LocalTime;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Session {
-    @XmlAttribute
     private int sessionID;
-    @XmlAttribute
     private String clockIn;
-    @XmlAttribute
     private String clockOut;
-    @XmlAttribute
     private int focusLevel = 0;
-    @XmlAttribute
     private int relevanceLevel = 0;
     static int lastIdUsed = 1;
-
-    public Session(){
-
-    }
-
 
     public int getSessionID() {
         return sessionID;

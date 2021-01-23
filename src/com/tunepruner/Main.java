@@ -18,7 +18,7 @@ public class Main {
         prompt();
     }
 
-    private static void prompt() {
+    private static void prompt() throws IOException {
         Sessions.persist();
         Scanner initialScanner = new Scanner(System.in);
 
@@ -27,7 +27,7 @@ public class Main {
         parseClockInCommand(initialCommand);
     }
 
-    private static void parseClockInCommand(String command) {
+    private static void parseClockInCommand(String command) throws IOException {
         boolean alreadyClockedIn = currentSession != null;
 
         if (command.equals("in") && !alreadyClockedIn) {
@@ -40,7 +40,7 @@ public class Main {
             parseClockOutCommand(command);
     }
 
-    private static void parseClockOutCommand(String command) {
+    private static void parseClockOutCommand(String command) throws IOException {
         boolean alreadyClockedIn = currentSession != null;
 
         if (command.equals("out") && alreadyClockedIn) {
@@ -55,7 +55,7 @@ public class Main {
     }
 
 
-    private static void parseListCommand(String command) {
+    private static void parseListCommand(String command) throws IOException {
         boolean alreadyClockedIn = currentSession != null;
 
         if (command.equals("list") && alreadyClockedIn) {
@@ -70,7 +70,7 @@ public class Main {
 
     }
 
-    private static void parseAdjustCommand(String command) {
+    private static void parseAdjustCommand(String command) throws IOException {
         boolean alreadyClockedIn = currentSession != null;
 
         if (command.equals("adjust") && alreadyClockedIn) {
@@ -129,7 +129,7 @@ public class Main {
                 newClockIn = LocalTime.parse(newClockInBeforeParse);
                 sessionToAdjust.setClockIn(newClockIn);
                 prompt();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Invalid! (example: 08:20:45)");
             }
         }
@@ -148,7 +148,7 @@ public class Main {
                 newClockOut = LocalTime.parse(newClockOutBeforeParse);
                 sessionToAdjust.setClockOut(newClockOut);
                 prompt();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Invalid! (example: 08:20:45)");
             }
         }
@@ -165,7 +165,7 @@ public class Main {
                 newFocusLevel = validateLevel(Integer.parseInt(scanner.nextLine()));
                 sessionToAdjust.setFocusLevel(newFocusLevel);
                 prompt();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Invalid! (example: 08:20:45)");
             }
         }
@@ -183,7 +183,7 @@ public class Main {
                 newRelevanceLevel = validateLevel(Integer.parseInt(scanner.nextLine()));
                 sessionToAdjust.setRelevanceLevel(newRelevanceLevel);
                 prompt();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Invalid! (example: 08:20:45)");
             }
         }
@@ -210,7 +210,7 @@ public class Main {
                 Sessions.add(currentSession);
                 currentSession = null;
                 prompt();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | IOException e) {
                 System.out.println("That's not valid. Type a number from 1 to 10.");
             }
         }
@@ -222,6 +222,6 @@ public class Main {
         else return levelToCheck;
     }
 
-
+//TODO remove I/O exception from signatures where possible
 }
 

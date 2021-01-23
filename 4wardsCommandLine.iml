@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.eclipse.birt.runtime:javax.xml.stream:1.0.1.v201004272200" level="project" />
     <orderEntry type="library" name="com.sun.xml.bind.external:relaxng-datatype:2.3.3-b02" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.3" level="project" />
   </component>
 </module>
