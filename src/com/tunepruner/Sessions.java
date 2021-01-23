@@ -2,12 +2,8 @@ package com.tunepruner;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import com.sun.javafx.tools.packager.JarSignature;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.io.*;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +31,8 @@ public class Sessions {
         for ( Session session : sessions ) {
             System.out.println("---------");
             System.out.println("SessionID: " + session.getSessionID());
-            System.out.println("ClockIn: " + session.getClockIn());
-            System.out.println("ClockOut: " + session.getClockOut());
+            System.out.println("ClockIn: " + session.getClockInTime() + "  --  " + session.getClockInDate());
+            System.out.println("ClockOut: " + session.getClockOutTime() + "  --  " + session.getClockOutDate());
             System.out.println("FocusLevel: " + session.getFocusLevel());
             System.out.println("RelevanceLevel: " + session.getRelevanceLevel());
         }

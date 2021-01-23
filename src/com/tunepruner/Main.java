@@ -1,12 +1,12 @@
 package com.tunepruner;
 
-import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
-gi
+
 public class Main {
     private static Session currentSession;
     //TODO handle a "cancel" command.
@@ -30,7 +30,7 @@ public class Main {
         boolean alreadyClockedIn = currentSession != null;
 
         if (command.equals("in") && !alreadyClockedIn) {
-            currentSession = new Session(LocalTime.now());
+            currentSession = new Session();
             prompt();
         } else if (command.equals("in") && alreadyClockedIn) {
             System.out.println("You're already clocked in!");
@@ -43,7 +43,8 @@ public class Main {
         boolean alreadyClockedIn = currentSession != null;
 
         if (command.equals("out") && alreadyClockedIn) {
-            currentSession.setClockOut(LocalTime.now());
+            currentSession.setClockOutTime(LocalTime.now());
+            currentSession.setClockOutDate(LocalDate.now());
             promptAtClockOut();
         } else if (command.equals("out") && !alreadyClockedIn) {
             System.out.println("You're not clocked in yet!");
@@ -126,7 +127,7 @@ public class Main {
             try {
                 String newClockInBeforeParse = scanner.nextLine() + ".000000000";
                 newClockIn = LocalTime.parse(newClockInBeforeParse);
-                sessionToAdjust.setClockIn(newClockIn);
+                sessionToAdjust.setClockInTime(newClockIn);
                 prompt();
             } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Invalid! (example: 08:20:45)");
@@ -137,18 +138,31 @@ public class Main {
 
     private static void promptAdjustClockOut(Session sessionToAdjust) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What new value(example: 08:20:45)?: ");
+        System.out.println("What new time(example: 08:20:45)?: ");
 
-        LocalTime newClockOut = null;
+        LocalTime newClockOutTime = null;
+        LocalDate newClockOutDate = null;
 
-        while (newClockOut == null) {
+        while (newClockOutTime == null) {
             try {
-                String newClockOutBeforeParse = scanner.nextLine() + ".000000000";
-                newClockOut = LocalTime.parse(newClockOutBeforeParse);
-                sessionToAdjust.setClockOut(newClockOut);
+                String newClockOutTimeBeforeParse = scanner.nextLine() + ".000000000";
+                newClockOutTime = LocalTime.parse(newClockOutTimeBeforeParse);
+                sessionToAdjust.setClockOutTime(newClockOutTime);
                 prompt();
             } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Invalid! (example: 08:20:45)");
+            }
+        }
+
+        System.out.println("What new date(example: 2019-03-29)?: ");
+        while (newClockOutDate == null) {
+            try {
+                String newClockOutDateBeforeParse = scanner.nextLine();
+                newClockOutDate = LocalDate.parse(newClockOutDateBeforeParse);
+                sessionToAdjust.setClockOutDate(newClockOutDate);
+                prompt();
+            } catch (IllegalArgumentException | IOException e) {
+                System.out.println("Invalid! (example: 2019-03-29)");
             }
         }
     }
