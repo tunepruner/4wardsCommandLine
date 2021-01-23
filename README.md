@@ -9,11 +9,10 @@ This is a tool allowing a user to do the following:
 - adjust any parameter of any previous session
 by referencing its session ID and parameter name
  
-The data is persisted in xml format at present. 
+The data is persisted in json format on this branch. 
 
-The project is written in Java 8 and depends on JAXB. 
-As of the time of this writing (shaw bae2cf81f), the 
-program runs perfectly in the IDE, but I can't figure out 
-why JAXB doesn't work anymore once I package the app
-into a JAR file and try to run it elsewhere. (See related 
-issue). 
+The project is written in Java 8 and depends on the GSon library. 
+As of the time of this writing (shaw f4d905cf8a2), the 
+data is persisted in json format. On the previous branch, 
+it was done in xml using JAXB, with which I ran into 
+problems while packaging the program into a JAR file. 
