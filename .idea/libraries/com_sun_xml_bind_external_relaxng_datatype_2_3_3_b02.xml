@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.sun.xml.bind.external:relaxng-datatype:2.3.3-b02" type="repository">
+    <properties maven-id="com.sun.xml.bind.external:relaxng-datatype:2.3.3-b02" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/relaxng-datatype-2.3.3-b02.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/relaxng-datatype-2.3.3-b02-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

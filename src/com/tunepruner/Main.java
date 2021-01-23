@@ -1,6 +1,8 @@
 package com.tunepruner;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Scanner;
 
@@ -11,8 +13,7 @@ public class Main {
     //TODO handle a "cancel" command.
 
 
-    public static void main(String[] args) throws JAXBException {
-
+    public static void main(String[] args) throws JAXBException, IOException {
         Sessions.readFromFile();
         prompt();
     }

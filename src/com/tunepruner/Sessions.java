@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,25 +65,42 @@ public class Sessions {
             StringWriter sw = new StringWriter();
             marshaller.marshal(sessions, sw);
 
-            File f = new File("./sessions.xml");
+
+            File f = new File("./programfiles/sessions.xml");
             marshaller.marshal(sessions, f);
+
         } catch (JAXBException e) {
             e.printStackTrace();
         }
 
     }
 
-    public static void readFromFile() throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(Sessions.class);
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+    public static void readFromFile() throws JAXBException, IOException {
+        File theDir = new File("./programfiles");
+        if (!theDir.exists()){
+            theDir.mkdirs();
+        }
 
-        File f = new File("./sessions.xml");
+        File f = new File("./programfiles/sessions.xml");
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        else if (f.length() != 0){
+            JAXBContext jaxbContext = JAXBContext.newInstance(Sessions.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-        Sessions unmarshalledObject = (Sessions) unmarshaller.unmarshal(f);
-        sessions = unmarshalledObject.getSessions();
+            Sessions unmarshalledObject = (Sessions) unmarshaller.unmarshal(f);
+            sessions = unmarshalledObject.getSessions();
+
+            Session.lastIdUsed = sessions.size() + 1;
+        }
     }
 
     private List<Session> getSessions() {
         return sessions;
     }
+
+    //TODO add method for removing sessions
+    //TODO add method for manual adding sessions
+
 }

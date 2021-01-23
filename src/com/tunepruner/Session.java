@@ -69,8 +69,4 @@ public class Session {
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }
-
-
-
-
 }

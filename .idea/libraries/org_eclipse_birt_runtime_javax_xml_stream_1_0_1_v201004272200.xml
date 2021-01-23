@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="org.eclipse.birt.runtime:javax.xml.stream:1.0.1.v201004272200" type="repository">
+    <properties maven-id="org.eclipse.birt.runtime:javax.xml.stream:1.0.1.v201004272200" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/javax.xml.stream-1.0.1.v201004272200.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/javax.xml.stream-1.0.1.v201004272200-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/javax.xml.stream-1.0.1.v201004272200-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
