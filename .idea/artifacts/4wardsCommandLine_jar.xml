@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact name="4wardsCommandLine:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/4wardsCommandLine_jar</output-path>
+    <root id="root">
+      <element id="archive" name="4wardsCommandLine.jar">
+        <element id="module-output" name="4wardsCommandLine" />
+      </element>
+      <element id="library" level="project" name="com.google.code.gson:gson:2.3" />
+      <element id="library" level="project" name="com.sun.xml.bind.external:relaxng-datatype:2.3.3-b02" />
+      <element id="library" level="project" name="org.eclipse.birt.runtime:javax.xml.stream:1.0.1.v201004272200" />
+    </root>
+  </artifact>
+</component>

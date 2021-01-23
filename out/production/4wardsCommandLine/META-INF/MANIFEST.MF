@@ -1,2 +1,5 @@
 Manifest-Version: 1.0
 Main-Class: com.tunepruner.Main
+Class-Path: gson-2.3.jar relaxng-datatype-2.3.3-b02.jar javax.xml.stream
+ -1.0.1.v201004272200.jar
+

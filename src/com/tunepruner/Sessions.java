@@ -6,14 +6,6 @@ import com.google.gson.stream.JsonWriter;
 import com.sun.javafx.tools.packager.JarSignature;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -71,7 +63,7 @@ public class Sessions {
 
     }
 
-    public static void readFromFile() throws JAXBException, IOException {
+    public static void readFromFile() throws IOException {
         String fileName = "sessions.json";
 
         File file = new File(fileName);

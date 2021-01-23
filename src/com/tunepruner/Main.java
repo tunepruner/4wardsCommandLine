@@ -1,19 +1,18 @@
 package com.tunepruner;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
-
+gi
 public class Main {
     private static Session currentSession;
     //TODO handle a "cancel" command.
 
 
-    public static void main(String[] args) throws JAXBException, IOException {
+    public static void main(String[] args) throws IOException {
         Sessions.readFromFile();
         prompt();
     }
